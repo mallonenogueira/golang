@@ -14,7 +14,7 @@ func main() {
 		Get("/users/{id}", userController.GetUserByID).
 		Get("/users", userController.GetUsers).
 		Post("/users", userController.CreateUser).
-		Put("/users", userController.UpdateUser).
+		Put("/users/{id}", userController.UpdateUser).
 		Delete("/users/{id}", userController.DeleteUser).
 		Register()
 

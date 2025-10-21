@@ -30,10 +30,6 @@ func NewRouter() *Router {
 	}
 }
 
-func routerHandler() {
-
-}
-
 func (r *Router) Register() {
 	routeMap := make(map[string][]Route)
 
@@ -45,16 +41,16 @@ func (r *Router) Register() {
 		routesCopy := routes
 
 		http.HandleFunc(endpoint, func(w http.ResponseWriter, req *http.Request) {
+			ctx := &Context{w, req}
 
 			for _, route := range routesCopy {
 				if req.Method == string(route.method) {
-					ctx := &Context{w, req}
 					route.handler(ctx)
 					return
 				}
 			}
-
-			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+			//TODO: change to handle error
+			ctx.ResponseJson(http.StatusMethodNotAllowed, &map[string]interface{}{"message": "Método não permitido"})
 		})
 	}
 }

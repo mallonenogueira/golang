@@ -36,7 +36,7 @@ func (u *UserController) GetUserByID(ctx *http.Context) {
 	user, err := u.service.GetUserByID(ctx.PathValue("id"))
 
 	if err != nil {
-		ctx.ResponseError(err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (u *UserController) CreateUser(ctx *http.Context) {
 	user, err := u.service.CreateUser(&userDTO)
 
 	if err != nil {
-		ctx.ResponseError(err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -70,7 +70,8 @@ func (u *UserController) UpdateUser(ctx *http.Context) {
 	err := u.service.UpdateUser(ctx.PathValue("id"), &user)
 
 	if err != nil {
-		ctx.ResponseError(err)
+		ctx.HandleError(err)
+		return
 	}
 
 	ctx.ResponseNoContent()
@@ -80,7 +81,8 @@ func (u *UserController) DeleteUser(ctx *http.Context) {
 	err := u.service.DeleteUser(ctx.PathValue("id"))
 
 	if err != nil {
-		ctx.ResponseError(err)
+		ctx.HandleError(err)
+		return
 	}
 
 	ctx.ResponseNoContent()

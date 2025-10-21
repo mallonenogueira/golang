@@ -27,13 +27,13 @@ func (s *UserService) GetAllUsers() []models.User {
 
 func (s *UserService) GetUserByID(id string) (*models.User, errors.AppError) {
 	if id == "" {
-		return nil, &errors.ValidationError{Message: "Id é obrigatório."}
+		return nil, errors.NewValidationError("Id é obrigatório.")
 	}
 
 	user, exists := s.repository.GetById(id)
 
 	if !exists {
-		return nil, &errors.ValidationError{Message: "Usuário não encontrado."}
+		return nil, errors.NewNotFoundError("Usuário não encontrado.", "User")
 	}
 
 	return &user, nil
@@ -59,7 +59,7 @@ func (u *UserService) UpdateUser(id string, userEntry *UserEntryDTO) errors.AppE
 	}
 
 	if !u.repository.Update(user) {
-		return &errors.NotFoundError{Message: "Usuário não encontrado."}
+		return errors.NewNotFoundError("Usuário não encontrado.", "User")
 	}
 
 	return nil
@@ -67,11 +67,11 @@ func (u *UserService) UpdateUser(id string, userEntry *UserEntryDTO) errors.AppE
 
 func (u *UserService) DeleteUser(id string) errors.AppError {
 	if id == "" {
-		return &errors.ValidationError{Message: "Id é obrigatório."}
+		return errors.NewValidationError("Id é obrigatório.")
 	}
 
 	if !u.repository.Delete(id) {
-		return &errors.NotFoundError{Message: "Usuário não encontrado."}
+		return errors.NewNotFoundError("Usuário não encontrado.", "User")
 	}
 
 	return nil
